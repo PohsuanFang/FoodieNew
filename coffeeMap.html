@@ -10,9 +10,10 @@
 </head>
 
     <body>
-    <h1 style="background-color:salmon"> Restaurants: Possible</h1>
-    <p>Please select the time and date to search the availability of the space:</p>
-    <select id="daySelect">
+
+    <h1 style="background-color:grey; font-family:Arial, Helvetica, sans-serif" > Restaurants: Possible</h1>
+    <h4 style="font-family: Arial"><p>Please select the time and date to search the availability of the space:</p></h4>
+    <select id="daySelect" size:'250px'>
             <option value=0>Sunday</option>
             <option value=1>Monday</option>
             <option value=2>Tuesday</option>
@@ -74,6 +75,7 @@
                 position: new google.maps.LatLng(newCoffeinfo.lat,newCoffeinfo.lng),
                 map: map,
                 icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+             
                 title: newCoffeinfo.name
                 }
             );i++;
@@ -97,18 +99,34 @@
                 {
                 position: new google.maps.LatLng(result[k].lat,result[k].lng),
                 map: map,
-                label: "v",
-                title: JSON.stringify(result[k].name),
-                address: result[k].phone,
-                name:JSON.stringify(result[k].name),
-                url:result[k].image_url
+                // label: "",
+                title: result[k].name.replace(/['"]+/g, ''),
+                phone: result[k].phone,
+                name:result[k].name.replace(/['"]+/g, ''),
+                url:result[k].image_url,
+                resurl: result[k].url
                 }
                 ); 
+        
+        var imagesource=marker3.url;
+        var contentString= '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h2 id="firstHeading" class="firstHeading">'+ marker3.name+'</h2>'+
+      '<div id="bodyContent">'+
+      '<p><b>Phone: </b>'+ marker3.phone+'</a></p>'+
+      '</div>'+
+      '</div>'+ "<img src="+imagesource+ " width=70 height=50>";
+        console.log(imagesource);
+        
+        var infowindow = new google.maps.InfoWindow({
+          content: contentString
+        });
                 marker3.addListener('click', function() {
-                console.log(marker3.name);
-                document.getElementById("image").setAttribute("src", marker3.url);
-                document.getElementById("name").innerHTML = marker3.name,
-                document.getElementById("contact").innerHTML ="Contact Owner: "+ marker3.address
+                    infowindow.open(map, marker3);
+                // document.getElementById("image").setAttribute("src", marker3.url);
+                // document.getElementById("name").innerHTML = marker3.name,
+                // document.getElementById("contact").innerHTML ="Contact Owner: "+ marker3.address
                 });
                 };  
             }
@@ -161,7 +179,7 @@
         </script>
         
         <div id="map" style="width: 640px; height: 480px" ></div>
-        <img id="image" src=""  width=30% style="left:650px; top:250px; position:absolute;">
+        <!-- <img id="image" src=""  width=30% style="left:650px; top:250px; position:absolute;"> -->
         
     </body>
 </html>
